@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
-import { Button, FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
 import * as SQLite from 'expo-sqlite';
 import { useEffect, useState } from 'react';
+import { Header, Icon, Button, Input, ListItem } from '@rneui/themed';
 
 
 export default function App() {
@@ -32,6 +33,8 @@ export default function App() {
       setOstokset(rows._array)
       );
     }, null, null);
+    setProduct('');
+    setAmount('');
   }
 
   const deleteItem = (id) => {
@@ -41,27 +44,33 @@ export default function App() {
   }
   return (
     <View style={styles.container}>
-    <TextInput
+      
+     <Header 
+     centerComponent={{text: 'Ostoslista', style: {color: '#fff', fontSize: 20}, }}/> 
+
+    <Input
       style= {{marginTop: 50, fontSize: 18}}
-      placeholder='Product'
+      placeholder='Tuote'
+      label='TUOTE'
       value={product}
       onChangeText={product => setProduct(product)} />
     
-    <TextInput
+    <Input
       style={styles.input}
-      placeholder='Amount'
+      placeholder='Määrä'
+      label='MÄÄRÄ'
       value={amount}
       onChangeText={amount => setAmount(amount)} />
 
-    <Button style= {styles.button} onPress={saveItem} title="Save" />
+     <Button type="solid" onPress={saveItem} >Tallenna<Icon name='save' color='white'/></Button>
 
     <FlatList
       style={{marginLeft: "5%"}}
       keyExtractor={item => item.id.toString()}
       renderItem={({item}) => 
-      <View style={styles.listcontainer}>
-        <Text>{item.product}, {item.amount}</Text>
-        <Text style={{color: '#0000ff'}} onPress={() => deleteItem(item.id)}> bought</Text>
+      <View style={styles.listcontainer}>       
+        <Text>{item.product}, {item.amount}</Text> 
+        <Button color='white' onPress={() => deleteItem(item.id)}><Icon name='delete' color= 'red' /> </Button>
       </View>}
       data={ostokset}
   />
@@ -92,3 +101,6 @@ const styles = StyleSheet.create({
 
   }
 });
+
+
+/* */
